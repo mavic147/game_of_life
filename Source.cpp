@@ -5,22 +5,22 @@
 using namespace std;
 
 const int SIDE = 30;
-int universe[SIDE][SIDE]; //создание массива
+int universe[SIDE][SIDE]; //СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР°
 
 
-void fill_first_generation(int u[SIDE][SIDE], int nRow, int nCol, bool is_random) { // заполнение первого поколения
+void fill_first_generation(int u[SIDE][SIDE], int nRow, int nCol, bool is_random) { // Р·Р°РїРѕР»РЅРµРЅРёРµ РїРµСЂРІРѕРіРѕ РїРѕРєРѕР»РµРЅРёСЏ
 	if (is_random) {
 		srand(time(nullptr));
 		for (int i = 0; i < SIDE; i++) {
 			for (int j = 0; j < SIDE; j++) {
-				if (rand() > 4000) // rand() генерит числа в диапазоне от 0 до 32к. Мы сузили этот диапазон, чтобы "0" генерилось больше, чем "1".
+				if (rand() > 4000) // rand() РіРµРЅРµСЂРёС‚ С‡РёСЃР»Р° РІ РґРёР°РїР°Р·РѕРЅРµ РѕС‚ 0 РґРѕ 32Рє. РњС‹ СЃСѓР·РёР»Рё СЌС‚РѕС‚ РґРёР°РїР°Р·РѕРЅ, С‡С‚РѕР±С‹ "0" РіРµРЅРµСЂРёР»РѕСЃСЊ Р±РѕР»СЊС€Рµ, С‡РµРј "1".
 					u[i][j] = 0;
 				else
 					u[i][j] = 1;
 			}
 		}
 	}
-	else { // глайдер
+	else { // РіР»Р°Р№РґРµСЂ
 		u[2][4] = 1;
 		u[3][5] = 1;
 		u[4][3] = 1;
@@ -30,77 +30,77 @@ void fill_first_generation(int u[SIDE][SIDE], int nRow, int nCol, bool is_random
 }
 
 
-void show_array(int u[SIDE][SIDE], int nRow, int nCol) { // вывод первого поколения на экран
+void show_array(int u[SIDE][SIDE], int nRow, int nCol) { // РІС‹РІРѕРґ РїРµСЂРІРѕРіРѕ РїРѕРєРѕР»РµРЅРёСЏ РЅР° СЌРєСЂР°РЅ
 	for (int i = 0; i < SIDE; i++) {
 		for (int j = 0; j < SIDE; j++) {
 			if (u[i][j] == 0)
-				cout << ' '; //обозначение мертвой клетки
+				cout << ' '; //РѕР±РѕР·РЅР°С‡РµРЅРёРµ РјРµСЂС‚РІРѕР№ РєР»РµС‚РєРё
 			else
-				cout << (char)178; // обозн. живой клетки
+				cout << (char)178; // РѕР±РѕР·РЅ. Р¶РёРІРѕР№ РєР»РµС‚РєРё
 		}
 		cout << endl;
 	}
 }
 
 
-int count_neighbours(int u[SIDE][SIDE], int i, int j) { // проверка ячеек на соседство(сюда передать координаты проверяемой ячейки)
+int count_neighbours(int u[SIDE][SIDE], int i, int j) { // РїСЂРѕРІРµСЂРєР° СЏС‡РµРµРє РЅР° СЃРѕСЃРµРґСЃС‚РІРѕ(СЃСЋРґР° РїРµСЂРµРґР°С‚СЊ РєРѕРѕСЂРґРёРЅР°С‚С‹ РїСЂРѕРІРµСЂСЏРµРјРѕР№ СЏС‡РµР№РєРё)
 	int count = 0;
-	if (i == 0 && j == 0) { //левый верхний угол
+	if (i == 0 && j == 0) { //Р»РµРІС‹Р№ РІРµСЂС…РЅРёР№ СѓРіРѕР»
 		count = u[SIDE - 1][SIDE - 1] + u[SIDE - 1][0] + u[SIDE - 1][j + 1] +
 			u[0][SIDE - 1] + u[i][j + 1] +
 			u[i + 1][SIDE - 1] + u[i + 1][0] + u[i + 1][j + 1];
 	}
 
-	else if (i == 0 && j == SIDE - 1) { // правый верхний угол
+	else if (i == 0 && j == SIDE - 1) { // РїСЂР°РІС‹Р№ РІРµСЂС…РЅРёР№ СѓРіРѕР»
 		count = u[SIDE - 1][SIDE - 2] + u[SIDE - 1][SIDE - 1] + u[SIDE - 1][0] +
 			u[0][SIDE - 2] + u[0][0] +
 			u[i + 1][SIDE - 2] + u[i + 1][SIDE - 1] + u[i + 1][0];
 	}
 
-	else if (i == SIDE - 1 && j == 0) { //левый нижний угол
+	else if (i == SIDE - 1 && j == 0) { //Р»РµРІС‹Р№ РЅРёР¶РЅРёР№ СѓРіРѕР»
 		count = u[SIDE - 2][SIDE - 1] + u[SIDE - 2][0] + u[SIDE - 2][j + 1] +
 			u[SIDE - 1][SIDE - 1] + u[SIDE - 1][j + 1] +
 			u[0][SIDE - 1] + u[0][0] + u[0][j + 1];
 	}
 
-	else if (i == SIDE - 1 && j == SIDE - 1) { // правый нижний угол
+	else if (i == SIDE - 1 && j == SIDE - 1) { // РїСЂР°РІС‹Р№ РЅРёР¶РЅРёР№ СѓРіРѕР»
 		count = u[SIDE - 2][SIDE - 2] + u[SIDE - 2][SIDE - 1] + u[SIDE - 2][0] +
 			u[SIDE - 1][SIDE - 2] + u[SIDE - 1][0] +
 			u[0][SIDE - 2] + u[0][SIDE - 1] + u[0][0];
 	}
 
-	else if (i == 0) { //верхняя каемка
+	else if (i == 0) { //РІРµСЂС…РЅСЏСЏ РєР°РµРјРєР°
 		count = u[SIDE - 1][j - 1] + u[SIDE - 1][j] + u[SIDE - 1][j + 1] +
 			u[0][j - 1] + u[0][j + 1] +
 			u[i + 1][j - 1] + u[i + 1][j] + u[i + 1][j + 1];
 	}
 
-	else if (j == 0) { // левый бок
+	else if (j == 0) { // Р»РµРІС‹Р№ Р±РѕРє
 		count = u[i - 1][SIDE - 1] + u[i - 1][j] + u[i - 1][j + 1] +
 			u[i][SIDE - 1] + u[i][j + 1] +
 			u[i + 1][SIDE - 1] + u[i + 1][j] + u[i + 1][j + 1];
 	}
 
-	else if (j == SIDE - 1) { //правый бок
+	else if (j == SIDE - 1) { //РїСЂР°РІС‹Р№ Р±РѕРє
 		count = u[i - 1][SIDE - 2] + u[i - 1][j] + u[i - 1][0] +
 			u[i][SIDE - 2] + u[i][0] +
 			u[i + 1][SIDE - 2] + u[i + 1][SIDE - 1] + u[i + 1][0];
 	}
 
-	else if (i == SIDE - 1) { // нижняя каемка
+	else if (i == SIDE - 1) { // РЅРёР¶РЅСЏСЏ РєР°РµРјРєР°
 		count = u[SIDE - 2][j - 1] + u[SIDE - 2][j] + u[SIDE - 2][j + 1] +
 			u[SIDE - 1][j - 1] + u[SIDE - 1][j + 1] +
 			u[0][j - 1] + u[0][j] + u[0][j + 1];
 	}
 
-	else //середина (общий случай)
+	else //СЃРµСЂРµРґРёРЅР° (РѕР±С‰РёР№ СЃР»СѓС‡Р°Р№)
 		count = u[i - 1][j - 1] + u[i - 1][j] + u[i - 1][j + 1] +
 		u[i][j - 1] + u[i][j + 1] +
 		u[i + 1][j - 1] + u[i + 1][j] + u[i + 1][j + 1];
 	return count;
 }
 
-void create_next_generation(int u[SIDE][SIDE], int nRow, int nCol) {//создание нового поколения, обозначение правил игры
+void create_next_generation(int u[SIDE][SIDE], int nRow, int nCol) {//СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РїРѕРєРѕР»РµРЅРёСЏ, РѕР±РѕР·РЅР°С‡РµРЅРёРµ РїСЂР°РІРёР» РёРіСЂС‹
 	int neighbours = 0;
 	int universe2[SIDE][SIDE]{};
 	int cell;
@@ -125,7 +125,7 @@ void create_next_generation(int u[SIDE][SIDE], int nRow, int nCol) {//создание н
 }
 
 
-void start_game() { //начало игры
+void start_game() { //РЅР°С‡Р°Р»Рѕ РёРіСЂС‹
 	fill_first_generation(universe, SIDE, SIDE, false);
 	show_array(universe, SIDE, SIDE);
 	while (true) {
